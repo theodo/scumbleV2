@@ -1,0 +1,137 @@
+{
+  "name": "my-awesome-project",
+  "version": "0.0.0",
+  "description": "This a project doing cool stuff",
+  "author": "LeoAnesi",
+  "license": "MIT",
+  "engines": {
+    "node": "^16.13.0",
+    "yarn": "^1.22.0"
+  },
+  "scripts": {
+    "build": "nest build -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build:migrations": "nest build -p tsconfig.migration.json",
+    "premigration:generate": "yarn build:migrations",
+    "migration:generate": ". ./.env.rc && typeorm migration:generate",
+    "migration:revert": ". ./.env.rc && typeorm migration:revert",
+    "premigration:run": "yarn build:migrations",
+    "migration:run": ". ./.env.rc && typeorm migration:run",
+    "migration:run:prod": "typeorm migration:run",
+    "schema:drop": ". ./.env.rc && typeorm schema:drop",
+    "test:schema:drop": ". ./.env.test.rc && ts-node -r tsconfig-paths/register node_modules/.bin/typeorm schema:drop",
+    "reset": "rm -rf node_modules && yarn install",
+    "start": ". ./.env.rc && nest start -p ./tsconfig.json src/main.ts --watch",
+    "start:debug": "yarn start --debug",
+    "start:prod": "node dist/src/main.js",
+    "lint": "eslint './**/*.{js,ts,tsx}' --max-warnings 0",
+    "lint:fix": "yarn lint --fix",
+    "security": "audit-ci --config ./audit-ci.json",
+    "test": ". ./.env.test.rc && jest * --maxWorkers=2",
+    "test:watch": "yarn test --watch",
+    "test:coverage": "yarn test --coverage",
+    "test:debug": "NODE_OPTIONS='--inspect-brk' yarn test",
+    "test:circular": "depcruise --validate .dependency-cruiser.js ."
+  },
+  "dependencies": {
+    "@nestjs/common": "^8.4.4",
+    "@nestjs/config": "^2.0.0",
+    "@nestjs/core": "^8.4.4",
+    "@nestjs/jwt": "^8.0.0",
+    "@nestjs/mapped-types": "^1.0.1",
+    "@nestjs/passport": "^8.2.1",
+    "@nestjs/platform-express": "^8.4.4",
+    "@nestjs/swagger": "^5.2.1",
+    "@nestjs/typeorm": "^8.0.3",
+    "bcrypt": "^5.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "cli-color": "^2.0.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.5",
+    "swagger-ui-express": "^4.3.0",
+    "typeorm": "^0.3.6",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^8.2.5",
+    "@nestjs/testing": "^8.4.4",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cli-color": "^2.0.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.13",
+    "@types/faker": "^5.5.9",
+    "@types/jest": "^27.4.1",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^14.17.32",
+    "@types/passport-jwt": "^3.0.6",
+    "@types/supertest": "^2.0.12",
+    "@types/validator": "^13.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "audit-ci": "^6.2.0",
+    "dependency-cruiser": "^11.6.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "faker": "^5.5.3",
+    "jest": "^27.5.1",
+    "prettier": "^2.6.2",
+    "supertest": "^6.2.2",
+    "ts-jest": "^27.1.4",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.14.1",
+    "typescript": "^4.6.3",
+    "webpack": "^5.72.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^helpers/(.*)": "<rootDir>/src/helpers/$1",
+      "^auth/(.*)": "<rootDir>/src/modules/auth/$1",
+      "^src/(.*)": "<rootDir>/src/$1",
+      "^modules/(.*)": "<rootDir>/src/modules/$1",
+      "^testUtils/(.*)": "<rootDir>/testUtils/$1"
+    },
+    "setupFiles": [
+      "<rootDir>/testUtils/setup.ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "testTimeout": 10000,
+    "coverageThreshold": {
+      "global": {
+        "statements": 90,
+        "branches": 75
+      }
+    },
+    "collectCoverageFrom": [
+      "<rootDir>/**/*.ts",
+      "!<rootDir>/dist/**",
+      "!<rootDir>/migration/**",
+      "!<rootDir>/testUtils/**",
+      "!<rootDir>/src/main.ts",
+      "!<rootDir>/src/modules/logger/**"
+    ]
+  }
+}
